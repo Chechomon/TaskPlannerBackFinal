@@ -28,27 +28,6 @@ public class TaskPlannerRestController {
     @Autowired
     TaskService taskService;
 
-    @RequestMapping(path="/createuser",method = RequestMethod.PUT)
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-            userService.createUser(user);
-        try {
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-        } catch (NumberFormatException ex){
-            Logger.getLogger(TaskPlannerRestController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("An error has ocurred",HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @RequestMapping(path="/authorizeuser", method = RequestMethod.GET)
-    public ResponseEntity<?> authorizeuser(String id, String password){
-        try {
-            return new ResponseEntity<>(userService.authorizeUser(id,password), HttpStatus.ACCEPTED);
-        } catch (NumberFormatException ex){
-            Logger.getLogger(TaskPlannerRestController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("An error has ocurred",HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @RequestMapping(path="/addtask", method = RequestMethod.PUT)
     public ResponseEntity<?> addTask(@RequestBody Task task, String userId){
         try {
@@ -73,6 +52,10 @@ public class TaskPlannerRestController {
     @RequestMapping(path="/updatetask", method = RequestMethod.PUT)
     public ResponseEntity<?> updateTasks(@RequestBody Task task){
         taskService.updateTask(task);
+        return getResponseEntity();
+    }
+
+    private ResponseEntity<?> getResponseEntity() {
         try {
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (NumberFormatException ex){
@@ -84,11 +67,6 @@ public class TaskPlannerRestController {
     @RequestMapping(path="/updateuser", method = RequestMethod.PUT)
     public ResponseEntity<?> updateTasks(@RequestBody User user){
         userService.updateUser(user);
-        try {
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-        } catch (NumberFormatException ex){
-            Logger.getLogger(TaskPlannerRestController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("An error has ocurred",HttpStatus.BAD_REQUEST);
-        }
+        return getResponseEntity();
     }
 }

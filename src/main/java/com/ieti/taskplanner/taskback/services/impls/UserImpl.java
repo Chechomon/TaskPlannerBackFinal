@@ -28,8 +28,13 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public void createUser(User user) {
-        users.add(user);
+    public boolean createUser(User user) {
+        boolean add = true;
+        for(User u:users){
+            if(u.getId().equals(user.getId())) add = false;
+        }
+        if(add) users.add(user);
+        return add;
     }
 
     @Override
@@ -73,5 +78,14 @@ public class UserImpl implements UserService {
             if(u.getId().equals(id) && u.getPassword().equals(password)) authorize=true;
         }
         return authorize;
+    }
+    
+    @Override
+    public User findUserByUsernameAndPassword(String username, String password) {
+        User user = null;
+        for(User u : users){
+            if(u.getId().equals(username) && u.getPassword().equals(password)) user=u;
+        }
+        return user;
     }
 }
